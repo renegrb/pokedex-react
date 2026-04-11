@@ -8,6 +8,8 @@ function App() {
 
   const [loading, setLoading] = useState(true);
 
+  const [error, setError] = useState(null);
+
   useEffect(() => {
     fetch("https://pokeapi.co/api/v2/pokemon?limit=20")
       .then(response => response.json())
@@ -23,6 +25,11 @@ function App() {
       .then(results => {
         setPokemones(results);
         setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setError("Hubo un error al cargar los Pokemon");
+        setLoading(false);
       });
   }, []);
 
@@ -30,9 +37,10 @@ function App() {
     <div>
       <h1>Mi Pokedex</h1>
 
-      {loading && <p>Cargando Pokedex</p>}
+      {error && <p>{error}</p>}
+      {loading && <p>Cargando Pokedex...</p>}
 
-      {!loading && pokemones.map((poke) => (
+      {!loading && !error && pokemones.map((poke) => (
         <PokemonCard
           key={poke.id}
           nombre={poke.name}
