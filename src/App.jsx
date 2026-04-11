@@ -14,6 +14,9 @@ function App() {
 
   const [pokemonSeleccionado, setPokemonSeleccionado] = useState(null);
 
+  // Número máximo en las estadiscticas (en detalle)
+  const MAX_STAT = 255;
+
   useEffect(() => {
     fetch("https://pokeapi.co/api/v2/pokemon?limit=20")
       .then(response => response.json())
@@ -64,13 +67,35 @@ function App() {
         onChange={(e) => setBusqueda(e.target.value)}
       />
 
-      {/* Mostrar detalle de pokemonSeleccionado: */}
+      {/* Mostrar detalles de pokemonSeleccionado: */}
       {pokemonSeleccionado && (
         <div className='detalle'>
           <h2>{pokemonSeleccionado.name}</h2>
           <img src={pokemonSeleccionado.sprites.front_default} alt={pokemonSeleccionado.name} />
           <p>ID: {pokemonSeleccionado.id}</p>
-          <p>Tipo: {pokemonSeleccionado.types[0].type.name}</p>
+          <p>Tipos:</p>
+          <ul>
+            {pokemonSeleccionado.types.map((t) => (
+              <li key={t.type.name}>{t.type.name}</li>
+            ))}
+          </ul>
+          <p>Altura: {pokemonSeleccionado.height}</p>
+          <p>Peso: {pokemonSeleccionado.weight}</p>
+          <p>Stats:</p>
+          <ul>
+            {pokemonSeleccionado.stats.map((s) => (
+              <li key={s.stat.name}>
+                <p>{s.stat.name}: {s.base_stat}</p>
+                <div className='barra'>
+                  <div
+                    className='progreso'
+                    style={{ width: `${(s.base_stat / MAX_STAT) * 100}%` }}
+                  >
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
           <button onClick={() => setPokemonSeleccionado(null)} style={{ cursor: "pointer" }}> Cerrar </button>
         </div>
       )}
