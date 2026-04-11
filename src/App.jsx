@@ -6,6 +6,8 @@ function App() {
 
   const [pokemones, setPokemones] = useState([]);
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     fetch("https://pokeapi.co/api/v2/pokemon?limit=20")
       .then(response => response.json())
@@ -20,6 +22,7 @@ function App() {
       })
       .then(results => {
         setPokemones(results);
+        setLoading(false);
       });
   }, []);
 
@@ -27,7 +30,9 @@ function App() {
     <div>
       <h1>Mi Pokedex</h1>
 
-      {pokemones.map((poke) => (
+      {loading && <p>Cargando Pokedex</p>}
+
+      {!loading && pokemones.map((poke) => (
         <PokemonCard
           key={poke.id}
           nombre={poke.name}
