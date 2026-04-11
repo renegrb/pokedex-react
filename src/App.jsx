@@ -12,6 +12,8 @@ function App() {
 
   const [busqueda, setBusqueda] = useState("");
 
+  const [pokemonSeleccionado, setPokemonSeleccionado] = useState(null);
+
   useEffect(() => {
     fetch("https://pokeapi.co/api/v2/pokemon?limit=20")
       .then(response => response.json())
@@ -62,6 +64,17 @@ function App() {
         onChange={(e) => setBusqueda(e.target.value)}
       />
 
+      {/* Mostrar detalle de pokemonSeleccionado: */}
+      {pokemonSeleccionado && (
+        <div className='detalle'>
+          <h2>{pokemonSeleccionado.name}</h2>
+          <img src={pokemonSeleccionado.sprites.front_default} alt={pokemonSeleccionado.name} />
+          <p>ID: {pokemonSeleccionado.id}</p>
+          <p>Tipo: {pokemonSeleccionado.types[0].type.name}</p>
+          <button onClick={() => setPokemonSeleccionado(null)} style={{ cursor: "pointer" }}> Cerrar </button>
+        </div>
+      )}
+
       <div className="container">
         {!loading && !error && pokemonesFiltrados.map((poke) => (
           <PokemonCard
@@ -70,6 +83,7 @@ function App() {
             imagen={poke.sprites.front_default}
             tipo={poke.types[0].type.name}
             id={poke.id}
+            onClick={() => setPokemonSeleccionado(poke)}
           />
         ))}
       </div>
