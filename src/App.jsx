@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import PokemonCard from './PokemonCard';
+import PokemonDetail from './PokemonDetail';
 import './App.css'
 
 function App() {
@@ -13,9 +14,6 @@ function App() {
   const [busqueda, setBusqueda] = useState("");
 
   const [pokemonSeleccionado, setPokemonSeleccionado] = useState(null);
-
-  // Número máximo en las estadiscticas (en detalle)
-  const MAX_STAT = 255;
 
   useEffect(() => {
     fetch("https://pokeapi.co/api/v2/pokemon?limit=20")
@@ -67,37 +65,11 @@ function App() {
         onChange={(e) => setBusqueda(e.target.value)}
       />
 
-      {/* Mostrar detalles de pokemonSeleccionado: */}
       {pokemonSeleccionado && (
-        <div className='detalle'>
-          <h2>{pokemonSeleccionado.name}</h2>
-          <img src={pokemonSeleccionado.sprites.front_default} alt={pokemonSeleccionado.name} />
-          <p>ID: {pokemonSeleccionado.id}</p>
-          <p>Tipos:</p>
-          <ul>
-            {pokemonSeleccionado.types.map((t) => (
-              <li key={t.type.name}>{t.type.name}</li>
-            ))}
-          </ul>
-          <p>Altura: {pokemonSeleccionado.height}</p>
-          <p>Peso: {pokemonSeleccionado.weight}</p>
-          <p>Stats:</p>
-          <ul>
-            {pokemonSeleccionado.stats.map((s) => (
-              <li key={s.stat.name}>
-                <p>{s.stat.name}: {s.base_stat}</p>
-                <div className='barra'>
-                  <div
-                    className='progreso'
-                    style={{ width: `${(s.base_stat / MAX_STAT) * 100}%` }}
-                  >
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-          <button onClick={() => setPokemonSeleccionado(null)} style={{ cursor: "pointer" }}> Cerrar </button>
-        </div>
+        <PokemonDetail
+          pokemon={pokemonSeleccionado}
+          onClose={() => setPokemonSeleccionado(null)}
+        />
       )}
 
       <div className="container">
@@ -116,4 +88,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
