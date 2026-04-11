@@ -4,9 +4,9 @@ function PokemonCard(props) {
 
     return (
 
-        <div>
+        <div className="card">
+            <img src={props.imagen} alt={props.nombre}/>
             <h3>{props.nombre}</h3>
-            <img src={props.imagen}/>
             <p>ID: {props.id}</p>
             <p>Tipo: {props.tipo}</p>
         </div>

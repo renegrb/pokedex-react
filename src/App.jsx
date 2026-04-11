@@ -40,16 +40,17 @@ function App() {
       {error && <p>{error}</p>}
       {loading && <p>Cargando Pokedex...</p>}
 
-      {!loading && !error && pokemones.map((poke) => (
-        <PokemonCard
-          key={poke.id}
-          nombre={poke.name}
-          imagen={poke.sprites.front_default}
-          tipo={poke.types[0].type.name}
-          id={poke.id}
-        />
-      ))}
-
+      <div className="container">
+        {!loading && !error && pokemones.map((poke) => (
+          <PokemonCard
+            key={poke.id}
+            nombre={poke.name}
+            imagen={poke.sprites.front_default}
+            tipo={poke.types[0].type.name}
+            id={poke.id}
+          />
+        ))}
+      </div>
     </div>
   )
 }
