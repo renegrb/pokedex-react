@@ -10,6 +10,8 @@ function App() {
 
   const [error, setError] = useState(null);
 
+  const [busqueda, setBusqueda] = useState("");
+
   useEffect(() => {
     fetch("https://pokeapi.co/api/v2/pokemon?limit=20")
       .then(response => response.json())
@@ -33,6 +35,19 @@ function App() {
       });
   }, []);
 
+  const pokemonesFiltrados = pokemones.filter((poke) => {
+    const nombre = poke.name.toLowerCase();
+    const busquedaTexto = busqueda.toLowerCase();
+
+    const coincideNombre = nombre.includes(busquedaTexto);
+    const coincideID = poke.id.toString().includes(busquedaTexto);
+    const coincideTipo = poke.types.some((t) =>
+      t.type.name.toLowerCase().includes(busquedaTexto)
+    );
+
+    return coincideNombre || coincideID || coincideTipo;
+  });
+
   return (
     <div>
       <h1>Mi Pokedex</h1>
@@ -40,8 +55,15 @@ function App() {
       {error && <p>{error}</p>}
       {loading && <p>Cargando Pokedex...</p>}
 
+      <input
+        type="text"
+        placeholder="Buscar Pokemon"
+        value={busqueda}
+        onChange={(e) => setBusqueda(e.target.value)}
+      />
+
       <div className="container">
-        {!loading && !error && pokemones.map((poke) => (
+        {!loading && !error && pokemonesFiltrados.map((poke) => (
           <PokemonCard
             key={poke.id}
             nombre={poke.name}
