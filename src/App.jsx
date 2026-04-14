@@ -16,7 +16,7 @@ function App() {
   const [pokemonSeleccionado, setPokemonSeleccionado] = useState(null);
 
   useEffect(() => {
-    fetch("https://pokeapi.co/api/v2/pokemon?limit=20")
+    fetch("https://pokeapi.co/api/v2/pokemon?limit=200")
       .then(response => response.json())
       .then(data => {
 
